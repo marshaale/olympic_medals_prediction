@@ -17,3 +17,8 @@ class UserInput(BaseModel):
     prev_gold_medals: int = Field(..., ge=0, description="Previous gold medals")
     sports: int = Field(..., ge=0, description="Number of sports")
     events: int = Field(..., ge=0, description="Number of events")
+
+
+class PredictionResponse(BaseModel):
+    medals: int
+    country_strength: str
