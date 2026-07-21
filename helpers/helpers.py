@@ -16,11 +16,10 @@ def season_encode(season: str) -> int:
     key = season.strip().lower()
 
     if key not in labels:
-        raise ValueError(
-            f"Invalid season '{season}'. Expected 'summer' or 'winter'."
-        )
+        raise ValueError(f"Invalid season '{season}'. Expected 'summer' or 'winter'.")
 
     return labels[key]
+
 
 def classification_result_decoder(result: int) -> str:
     """
@@ -38,8 +37,3 @@ def classification_result_decoder(result: int) -> str:
     }
 
     return labels.get(result, "Unknown Classification")
-
-if __name__ == "__main__":
-    print(season_encode('winter'),season_encode('summer'))
-    for i in range(0,3):
-        print(f"Cluster: {i}",classification_result_decoder(i))

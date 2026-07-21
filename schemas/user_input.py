@@ -6,6 +6,7 @@ class Season(str, Enum):
     summer = "summer"
     winter = "winter"
 
+
 class UserInput(BaseModel):
     season: Season = Field(..., description="Olympic season")
     year: int = Field(..., ge=1896, description="Olympic year")

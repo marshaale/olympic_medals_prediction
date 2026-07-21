@@ -1,5 +1,5 @@
 from helpers.predict import predict_medals_noc_strength
-from schemas.user_input import UserInput,PredictionResponse
+from schemas.user_input import UserInput, PredictionResponse
 from fastapi import APIRouter, HTTPException
 
 router = APIRouter()
@@ -7,6 +7,7 @@ router = APIRouter()
 # ----------------------------
 # Routes
 # ----------------------------
+
 
 @router.post("/predict", response_model=PredictionResponse)
 def predict(data: UserInput):
