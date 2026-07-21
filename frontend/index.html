@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medal Board — Olympic Prediction Model</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="grain"></div>
+
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="eyebrow">
+          <span class="dot"></span> LANE 01 · INFERENCE MODEL LIVE
+        </div>
+        <h1 class="flap-title" id="flapTitle" aria-label="Medal Board">
+          MEDAL BOARD
+        </h1>
+        <p class="subhead">
+          Enter a national delegation's profile. The model reads it back as a
+          medal count and a strength class — the same way a scoreboard reads a
+          finish.
+        </p>
+      </div>
+    </header>
+
+    <main class="layout">
+      <!-- ENTRY FORM -->
+      <section class="card entry-card" aria-labelledby="entryHeading">
+        <div class="card-head">
+          <span class="card-index">FORM A</span>
+          <h2 id="entryHeading">Delegation Entry</h2>
+        </div>
+
+        <form id="predictForm" novalidate>
+          <div class="field-group">
+            <span class="field-label">Games</span>
+            <div class="segmented" role="radiogroup" aria-label="Season">
+              <button
+                type="button"
+                class="seg-btn is-active"
+                data-season="summer"
+                role="radio"
+                aria-checked="true"
+              >
+                Summer
+              </button>
+              <button
+                type="button"
+                class="seg-btn"
+                data-season="winter"
+                role="radio"
+                aria-checked="false"
+              >
+                Winter
+              </button>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <label class="field" data-field="year">
+              <span class="field-label">Year</span>
+              <input
+                type="number"
+                id="year"
+                name="year"
+                min="1896"
+                step="1"
+                value="2024"
+                required
+              />
+              <span class="field-err" id="err-year"></span>
+            </label>
+            <label class="field" data-field="athletes">
+              <span class="field-label">Athletes sent</span>
+              <input
+                type="number"
+                id="athletes"
+                name="athletes"
+                min="0"
+                step="1"
+                value="120"
+                required
+              />
+              <span class="field-err" id="err-athletes"></span>
+            </label>
+          </div>
+
+          <div class="field-row three">
+            <label class="field" data-field="avg_age">
+              <span class="field-label">Avg. age</span>
+              <input
+                type="number"
+                id="avg_age"
+                name="avg_age"
+                min="0"
+                step="0.1"
+                value="25.5"
+                required
+              />
+              <span class="field-err" id="err-avg_age"></span>
+            </label>
+            <label class="field" data-field="avg_height">
+              <span class="field-label">Avg. height <em>cm</em></span>
+              <input
+                type="number"
+                id="avg_height"
+                name="avg_height"
+                min="0"
+                step="0.1"
+                value="178"
+                required
+              />
+              <span class="field-err" id="err-avg_height"></span>
+            </label>
+            <label class="field" data-field="avg_weight">
+              <span class="field-label">Avg. weight <em>kg</em></span>
+              <input
+                type="number"
+                id="avg_weight"
+                name="avg_weight"
+                min="0"
+                step="0.1"
+                value="74"
+                required
+              />
+              <span class="field-err" id="err-avg_weight"></span>
+            </label>
+          </div>
+
+          <div class="rule"><span>PRIOR GAMES RECORD</span></div>
+
+          <div class="field-row">
+            <label class="field" data-field="prev_medals">
+              <span class="field-label">Previous medals</span>
+              <input
+                type="number"
+                id="prev_medals"
+                name="prev_medals"
+                min="0"
+                step="1"
+                value="10"
+                required
+              />
+              <span class="field-err" id="err-prev_medals"></span>
+            </label>
+            <label class="field" data-field="prev_gold_medals">
+              <span class="field-label">Previous golds</span>
+              <input
+                type="number"
+                id="prev_gold_medals"
+                name="prev_gold_medals"
+                min="0"
+                step="1"
+                value="3"
+                required
+              />
+              <span class="field-err" id="err-prev_gold_medals"></span>
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label class="field" data-field="sports">
+              <span class="field-label">Sports entered</span>
+              <input
+                type="number"
+                id="sports"
+                name="sports"
+                min="0"
+                step="1"
+                value="15"
+                required
+              />
+              <span class="field-err" id="err-sports"></span>
+            </label>
+            <label class="field" data-field="events">
+              <span class="field-label">Events entered</span>
+              <input
+                type="number"
+                id="events"
+                name="events"
+                min="0"
+                step="1"
+                value="40"
+                required
+              />
+              <span class="field-err" id="err-events"></span>
+            </label>
+          </div>
+
+          <details class="connection">
+            <summary>Connection settings</summary>
+            <label class="field">
+              <span class="field-label">API base URL</span>
+              <input
+                type="text"
+                id="apiBase"
+                name="apiBase"
+                value="http://localhost:8000"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </label>
+          </details>
+
+          <button type="submit" class="run-btn" id="runBtn">
+            <span>Run Prediction</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 8H14M14 8L9 3M14 8L9 13"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </form>
+      </section>
+
+      <!-- RESULT SCOREBOARD -->
+      <section class="card result-card" aria-live="polite">
+        <div class="card-head">
+          <span class="card-index">BOARD B</span>
+          <h2>Projected Result</h2>
+        </div>
+
+        <div class="scoreboard" id="scoreboard">
+          <div class="board-state" id="stateIdle">
+            <div class="idle-mark">—</div>
+            <p>
+              Fill in the entry form and run a prediction. The board updates
+              here.
+            </p>
+          </div>
+
+          <div class="board-state is-hidden" id="stateLoading">
+            <div class="flap-digits" id="loadingFlaps"></div>
+            <p>Reading the delegation…</p>
+          </div>
+
+          <div class="board-state is-hidden" id="stateSuccess">
+            <span class="result-label">Predicted medal count</span>
+            <div class="flap-digits" id="resultFlaps"></div>
+            <div class="tier-badge" id="tierBadge">
+              <span id="tierText">—</span>
+            </div>
+          </div>
+
+          <div class="board-state is-hidden" id="stateValidation">
+            <div class="fault-mark">✕</div>
+            <span class="result-label fault">Entry rejected</span>
+            <ul class="fault-list" id="validationList"></ul>
+          </div>
+
+          <div class="board-state is-hidden" id="stateFault">
+            <div class="fault-mark">!</div>
+            <span class="result-label fault">System fault</span>
+            <p class="fault-detail" id="faultDetail"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <span>POST /api/v1/predict</span>
+      <span class="sep">·</span>
+      <span id="footerStatus">awaiting first call</span>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
