@@ -6,7 +6,7 @@ from xgboost import XGBClassifier, XGBRegressor
 
 from core.config import SCALER_PATH, CLASSIFICATION_MODEL_PATH, REGRESSION_MODEL_PATH
 from schemas.user_input import UserInput, PredictionResponse
-from .helpers import classification_result_decoder, season_encode
+from .helpers import classification_result_decoder, season_encode,iqr_fun
 
 scaler: RobustScaler = joblib.load(SCALER_PATH)
 regression: XGBRegressor = joblib.load(REGRESSION_MODEL_PATH)
@@ -35,12 +35,15 @@ def classification_df(data: UserInput) -> pd.DataFrame:
             "agv_height": data.avg_height,
             "avg_weight": data.avg_weight,
             "prev_medals": data.prev_medals,
-            "prev_gold_medals": data.prev_gold_medals,
             "sports": data.sports,
             "events": data.events,
         },
         index=[0],
     )
+    
+    for col in df.columns.tolist():
+        lower,upper = iqr_fun(df[col])
+        df[col] = df[col].clip(lower,upper)
 
     return df
 

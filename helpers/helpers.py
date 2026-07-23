@@ -37,3 +37,11 @@ def classification_result_decoder(result: int) -> str:
     }
 
     return labels.get(result, "Unknown Classification")
+
+
+def iqr_fun(series,k=3)->tuple[float,float]:
+    q1, q3 = series.quantile([0.25, 0.75])
+    iqr = q3 - q1
+    lower = q1 - k * iqr
+    upper = q3 + k * iqr
+    return lower,upper
