@@ -7,7 +7,7 @@ UTILS_PATH = ROOT / "utils"
 MODELS_PATH = ROOT / "models"
 
 # MODEL FILES
-CLASSIFICATION_MODEL_PATH = MODELS_PATH / "xgb_classification_model.joblib"
+CLASSIFICATION_MODEL_PATH = MODELS_PATH / "rf_classification_model.joblib"
 REGRESSION_MODEL_PATH = MODELS_PATH / "xgb_regression_model.joblib"
 
 # UTILITY FILES
