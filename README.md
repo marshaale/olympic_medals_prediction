@@ -1,4 +1,4 @@
-# Machine Learning Project Report Template
+# Machine Learning Project
 
 ## 1. Project Title
 
