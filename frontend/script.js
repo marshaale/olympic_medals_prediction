@@ -81,9 +81,12 @@
     [...container.children].forEach((cell, i) => {
       cell.classList.add("flipping");
       const face = cell.querySelector(".digit-face");
-      const spin = setInterval(() => {
-        face.textContent = Math.floor(Math.random() * 10);
-      }, 70 + i * 15);
+      const spin = setInterval(
+        () => {
+          face.textContent = Math.floor(Math.random() * 10);
+        },
+        70 + i * 15,
+      );
       cell._spin = spin;
     });
     return container;
@@ -132,8 +135,15 @@
      FIELD ERROR HELPERS
   ----------------------------------------------------------- */
   const numericFields = [
-    "year", "athletes", "avg_age", "avg_height",
-    "avg_weight", "prev_medals", "prev_gold_medals", "sports", "events",
+    "year",
+    "athletes",
+    "avg_age",
+    "avg_height",
+    "avg_weight",
+    "prev_medals",
+    "prev_gold_medals",
+    "sports",
+    "events",
   ];
 
   function clearFieldErrors() {
@@ -155,6 +165,7 @@
   /* -----------------------------------------------------------
      FORM SUBMIT
   ----------------------------------------------------------- */
+  const API_BASE_URL = "https://dsml.sotechho.com";
   const form = document.getElementById("predictForm");
   const runBtn = document.getElementById("runBtn");
   const footerStatus = document.getElementById("footerStatus");
@@ -166,10 +177,15 @@
 
   function fieldLabel(name) {
     const labels = {
-      year: "Year", athletes: "Athletes sent", avg_age: "Avg. age",
-      avg_height: "Avg. height", avg_weight: "Avg. weight",
-      prev_medals: "Previous medals", prev_gold_medals: "Previous golds",
-      sports: "Sports entered", events: "Events entered",
+      year: "Year",
+      athletes: "Athletes sent",
+      avg_age: "Avg. age",
+      avg_height: "Avg. height",
+      avg_weight: "Avg. weight",
+      prev_medals: "Previous medals",
+      prev_gold_medals: "Previous golds",
+      sports: "Sports entered",
+      events: "Events entered",
     };
     return labels[name] || name;
   }
@@ -178,7 +194,6 @@
     e.preventDefault();
     clearFieldErrors();
 
-    const apiBase = document.getElementById("apiBase").value.trim().replace(/\/+$/, "");
     const payload = {
       season: currentSeason,
       year: Number(document.getElementById("year").value),
@@ -187,7 +202,9 @@
       avg_height: Number(document.getElementById("avg_height").value),
       avg_weight: Number(document.getElementById("avg_weight").value),
       prev_medals: Number(document.getElementById("prev_medals").value),
-      prev_gold_medals: Number(document.getElementById("prev_gold_medals").value),
+      prev_gold_medals: Number(
+        document.getElementById("prev_gold_medals").value,
+      ),
       sports: Number(document.getElementById("sports").value),
       events: Number(document.getElementById("events").value),
     };
@@ -198,14 +215,21 @@
     footerStatus.textContent = "calling model…";
 
     try {
-      const res = await fetch(`${apiBase}/api/v1/predict`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/predict`, {
         method: "POST",
-        headers: { "Accept": "application/json", "Content-Type": "application/json" },
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(payload),
       });
 
       let body = null;
-      try { body = await res.json(); } catch (_) { body = null; }
+      try {
+        body = await res.json();
+      } catch (_) {
+        body = null;
+      }
 
       stopLoadingFlaps(loadingFlaps);
 
@@ -221,11 +245,14 @@
         showState("validation");
         validationList.innerHTML = "";
         body.detail.forEach((issue) => {
-          const loc = Array.isArray(issue.loc) ? issue.loc[issue.loc.length - 1] : "field";
+          const loc = Array.isArray(issue.loc)
+            ? issue.loc[issue.loc.length - 1]
+            : "field";
           const li = document.createElement("li");
           li.innerHTML = `<b>${fieldLabel(loc)}</b>${issue.msg || "Invalid value"}`;
           validationList.appendChild(li);
-          if (numericFields.includes(loc)) applyFieldError(loc, issue.msg || "Invalid value");
+          if (numericFields.includes(loc))
+            applyFieldError(loc, issue.msg || "Invalid value");
         });
         footerStatus.textContent = `422 · ${body.detail.length} field${body.detail.length === 1 ? "" : "s"} rejected`;
         return;
@@ -233,14 +260,16 @@
 
       // any other non-ok response, including 500 { detail: "..." }
       showState("fault");
-      const detail = body && typeof body.detail === "string" ? body.detail : `Request failed with status ${res.status}`;
+      const detail =
+        body && typeof body.detail === "string"
+          ? body.detail
+          : `Request failed with status ${res.status}`;
       faultDetail.textContent = detail;
       footerStatus.textContent = `${res.status} · fault`;
-
     } catch (err) {
       stopLoadingFlaps(loadingFlaps);
       showState("fault");
-      faultDetail.textContent = `Could not reach ${apiBase}. Check the API is running and the base URL is correct.`;
+      faultDetail.textContent = `Could not reach ${API_BASE_URL}. Check the API is running.`;
       footerStatus.textContent = "network error";
     } finally {
       runBtn.disabled = false;
