@@ -48,7 +48,7 @@ For scaling i will use RobustScaler which is good for handling massive outliers 
 - Kmeans
 - AgglomerativeClustering
 
-`Why` common models to use clustering
+`Why` Simple, fast, and widely used algorithms.
 
 ### Classification
 
@@ -56,7 +56,7 @@ For scaling i will use RobustScaler which is good for handling massive outliers 
 - Xgboost
 - Random Forest
 
-`Why` Xgboost best for large tabular dataset, Random Forest best for
+`Why` LR Best for simple linear relationships, Xgboost best for large tabular dataset, Random Forest best for nonlinear relationships
 
 ### Regression
 
@@ -64,7 +64,7 @@ For scaling i will use RobustScaler which is good for handling massive outliers 
 - Xgboost
 - Random Forest
 
-`Why`
+`Why` LR Best for simple linear relationships,Xgboost best for large tabular dataset, Random Forest best for nonlinear relationships
 
 ## Results and discussion
 
