@@ -1,8 +1,8 @@
 ## Problem statement and motivation
 
-Predicting olympic medal and country candidates for countries attend to olympic.
+**Goal:** Predict the number of Olympic medals a country will win and identify potential medal-winning countries before the Olympic Games.
 
-Motivation fun sports.
+**Motivation:** A fun sports analytics project that applies machine learning to analyze historical Olympic performance and forecast future medal outcomes for participating countries.
 
 ## Dataset and preprocessing
 
